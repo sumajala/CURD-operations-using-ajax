@@ -1,0 +1,43 @@
+﻿@model IEnumerable<WebApplication9.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-1.9.1.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/Product.js"></script>
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", new { area = "" }, new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ProductID }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProductID }, new { @class = "btn btn-success" })
+            </td>
+        </tr>
+    }
+
+</table>

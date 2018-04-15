@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="JqueryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Age" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ProductSolds" Relationship="Self.FK_ProductSold_Customer" FromRole="Customer" ToRole="ProductSold" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Double" />
+    <NavigationProperty Name="ProductSolds" Relationship="Self.FK_ProductSold_Product" FromRole="Product" ToRole="ProductSold" />
+  </EntityType>
+  <EntityType Name="ProductSold">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductID" Type="Int32" />
+    <Property Name="CustomerID" Type="Int32" />
+    <Property Name="StoreID" Type="Int32" />
+    <Property Name="DateSold" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Customer" Relationship="Self.FK_ProductSold_Customer" FromRole="ProductSold" ToRole="Customer" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_ProductSold_Product" FromRole="ProductSold" ToRole="Product" />
+    <NavigationProperty Name="Store" Relationship="Self.FK_ProductSold_Store" FromRole="ProductSold" ToRole="Store" />
+  </EntityType>
+  <EntityType Name="Store">
+    <Key>
+      <PropertyRef Name="StoreID" />
+    </Key>
+    <Property Name="StoreID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ProductSolds" Relationship="Self.FK_ProductSold_Store" FromRole="Store" ToRole="ProductSold" />
+  </EntityType>
+  <Association Name="FK_ProductSold_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="ProductSold" Type="Self.ProductSold" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerID" />
+      </Principal>
+      <Dependent Role="ProductSold">
+        <PropertyRef Name="CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProductSold_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="ProductSold" Type="Self.ProductSold" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="ProductSold">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProductSold_Store">
+    <End Role="Store" Type="Self.Store" Multiplicity="0..1" />
+    <End Role="ProductSold" Type="Self.ProductSold" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Store">
+        <PropertyRef Name="StoreID" />
+      </Principal>
+      <Dependent Role="ProductSold">
+        <PropertyRef Name="StoreID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="JqueryEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customers" EntityType="Self.Customer" />
+    <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="ProductSolds" EntityType="Self.ProductSold" />
+    <EntitySet Name="Stores" EntityType="Self.Store" />
+    <AssociationSet Name="FK_ProductSold_Customer" Association="Self.FK_ProductSold_Customer">
+      <End Role="Customer" EntitySet="Customers" />
+      <End Role="ProductSold" EntitySet="ProductSolds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProductSold_Product" Association="Self.FK_ProductSold_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="ProductSold" EntitySet="ProductSolds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProductSold_Store" Association="Self.FK_ProductSold_Store">
+      <End Role="Store" EntitySet="Stores" />
+      <End Role="ProductSold" EntitySet="ProductSolds" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
